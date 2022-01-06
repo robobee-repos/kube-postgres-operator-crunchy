@@ -28,3 +28,12 @@ singleNamespace: false
 # debug allows you to enable or disable the "debug" level of logging.
 # Defaults to the value below.
 debug: true
+
+## resource requests and limits
+## ref: https://kubernetes.io/docs/user-guide/compute-resources/
+## @param resources.limits The resources limits for the haproxy containers
+## @param resources.requests The requested resources for the haproxy containers
+##
+resources:
+  limits: {}
+  requests: {}

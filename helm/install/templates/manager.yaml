@@ -16,6 +16,12 @@ spec:
       labels:
         {{- include "install.crunchyLabels" . | nindent 8 }}
     spec:
+      {{- if .Values.affinity }}
+      affinity: {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations: {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
       containers:
       - name: operator
         image: "{{ .Values.image.image }}"
@@ -34,4 +40,7 @@ spec:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsNonRoot: true
+        {{- if .Values.resources }}
+        resources: {{- toYaml .Values.resources | nindent 10 }}
+        {{- end }}
       serviceAccount: {{ include "install.serviceAccountName" . }}
