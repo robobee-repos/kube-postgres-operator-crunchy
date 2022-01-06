@@ -1,0 +1,51 @@
+monitoring: true
+backupsSize: 20Gi
+openshift: false
+
+instances:
+- name: pgha1
+  replicas: 3
+  resources:
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  dataVolumeClaimSpec:
+    accessModes:
+    - "ReadWriteOnce"
+    storageClassName: "nfs"
+    resources:
+      requests:
+        storage: 5Gi
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - postgres
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Equal
+
+pgBouncerConfig:
+  replicas: 1
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - keycloak
+
+users:
+- name: keycloak
+  databases:
+  - keycloak
