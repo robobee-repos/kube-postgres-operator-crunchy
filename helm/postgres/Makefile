@@ -8,7 +8,9 @@ NAME := $(shell yq e ".name" Chart.yaml)
 publish: package
 
 .PHONY: package
-package:
+package: $(BASE_DIR)/charts/$(NAME)-$(VERSION).tgz
+
+$(BASE_DIR)/charts/$(NAME)-$(VERSION).tgz:
 	helm package .
 	mv $(NAME)-$(VERSION).tgz $(BASE_DIR)/charts
 
